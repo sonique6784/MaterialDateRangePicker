@@ -819,6 +819,29 @@ public class DatePickerDialog extends DialogFragment implements
         } else if (v.getId() == R.id.date_picker_month_and_day||v.getId() == R.id.date_picker_month_and_day_end) {
             setCurrentView(MONTH_AND_DAY_VIEW);
         }
+        
+        
+    }
+
+    protected void setRangeForCurrentDates(){
+        // Update UI with selected days
+        if(mCalendar.before(mCalendarEnd)) {
+            long diff = mCalendarEnd.getTimeInMillis() - mCalendar.getTimeInMillis();
+            diff /= 24 * 60 * 60 * 1000; // number of days
+
+            if(diff > 1) {
+                Calendar highlightedDays[] = new Calendar[(int)diff];
+                for(int i=0; i < diff; i++) {
+                    Calendar hlcal = Calendar.getInstance();
+                    hlcal.setTime(cal.getTime());
+                    highlightedDays[i] = hlcal;
+                    
+                    cal.add(Calendar.DATE, 1); // increment date + 1day
+                }
+
+                this.setHighlightedDays(highlightedDays, highlightedDays);
+            }
+        }
     }
 
     @Override
